@@ -1,7 +1,10 @@
 name: Deploy DocFX Documentation to GitHub Pages
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # Trigger manually from the GitHub UI
+
+permissions:
+  contents: write  # This allows write access to repository content (required for pushing to gh-pages)
 
 jobs:
   deploy:
@@ -18,7 +21,7 @@ jobs:
 
       - name: Install DocFX
         run: |
-          dotnet tool install --global
+          dotnet tool install --global docfx
 
       - name: Build DocFX documentation
         run: |
@@ -27,6 +30,6 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          folder: './_site'  # Folder where DocFX generates the documentation
+          publish_dir: './_site'  # Folder where DocFX generates the documentation
           target_branch: gh-pages  # GitHub Pages branch
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # This will use the auto-generated token

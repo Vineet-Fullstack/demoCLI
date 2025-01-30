@@ -18,11 +18,11 @@ jobs:
 
       - name: Install DocFX
         run: |
-          dotnet tool install --global docfx
+          dotnet tool install --global
 
       - name: Build DocFX documentation
         run: |
-          docfx build ./DocFX/docfx.json
+          docfx build docfx.json
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

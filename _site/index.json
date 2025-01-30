@@ -1,0 +1,22 @@
+{
+  "README.html": {
+    "href": "README.html",
+    "title": "demoCli .NET CLI Tool | demoCli",
+    "keywords": "demoCli .NET CLI Tool demoCli is a simple command-line interface (CLI) tool built with .NET that you can install and use globally for various tasks. This README provides installation instructions, usage examples, and how to validate your installation. Installation To install the demoCli tool globally on your system, run the following command: dotnet tool install --global demoCli **## Usgae** ```bash democli version democli version"
+  },
+  "getting-started.html": {
+    "href": "getting-started.html",
+    "title": "Getting Started with demoCLI | demoCli",
+    "keywords": "Getting Started with demoCLI Welcome to demoCLI! Follow this guide to install and start using the tool. \uD83D\uDCCC Prerequisites Before installing demoCLI, make sure you have: ✅ .NET SDK 8 or later installed. You can check by running: dotnet --version"
+  },
+  "index.html": {
+    "href": "index.html",
+    "title": "Welcome to demoCLI Documentation | demoCli",
+    "keywords": "Welcome to demoCLI Documentation demoCLI is a simple .NET CLI tool that helps you execute basic commands from the terminal. Features Check the tool version. Display a greeting message. Easy installation and usage. Installation To install demoCLI as a global .NET tool, run: dotnet tool install --global demoCli"
+  },
+  "introduction.html": {
+    "href": "introduction.html",
+    "title": "Introduction to demoCLI | demoCli",
+    "keywords": "Introduction to demoCLI Overview demoCLI is a lightweight and user-friendly command-line tool designed to simplify basic command execution in a .NET environment. Whether you're a developer testing CLI applications or someone who frequently uses terminal commands, demoCLI provides a simple and efficient way to interact with the command line. Key Features \uD83D\uDCCC Quick Installation – Install demoCLI as a .NET global tool in seconds. ⚡ Simple Commands – Execute basic commands like hello and version easily. \uD83D\uDDA5️ Cross-Platform Support – Works on Windows, macOS, and Linux. \uD83D\uDE80 Open Source – Built with .NET 8 and customizable for your needs. Who is this for? Developers working with .NET applications. Users who want a lightweight CLI tool for quick commands. Anyone interested in learning .NET CLI tool development. Next Steps \uD83D\uDD39 Getting Started – Learn how to install and use demoCLI. \uD83D\uDD39 API Documentation – Explore the internal implementation."
+  }
+}

@@ -1,7 +1,9 @@
-name: Create Release and Upload Assets
+name: CI/CD Pipeline
 
 on:
   push:
+    branches:
+      - main  # Trigger on pushes to the main branch
     tags:
       - 'v*'  # Trigger on tags like v1.0.0, v2.0.0, etc.
   workflow_dispatch:  # Allow manual triggering
@@ -12,8 +14,36 @@ on:
         default: 'v1.0.0'
 
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
+    environment: QA  # Specify the environment (e.g., QA)
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up .NET 8 SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x'  # Adjust to your target .NET version
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build the project
+        run: dotnet build --configuration Release
+
+      - name: Pack the project
+        run: dotnet pack --configuration Release --output ./nupkgs
+
+      - name: Publish to NuGet
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}  # Reference the secret from the QA environment
+        run: dotnet nuget push ./nupkgs/*.nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json
+
+  build-release-assets:
+    runs-on: ubuntu-latest
+    needs: build-and-publish  # Wait for the build-and-publish job to complete
     strategy:
       matrix:
         platform: [win-x64, linux-x64, osx-x64]  # Target platforms
@@ -41,9 +71,9 @@ jobs:
           name: ${{ matrix.platform }}
           path: ./publish/${{ matrix.platform }}.zip
 
-  release:
+  create-release:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-release-assets  # Wait for the build-release-assets job to complete
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4

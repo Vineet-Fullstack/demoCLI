@@ -10,6 +10,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Ensure full history is fetched
+
+    - name: List files in repo
+      run: ls -R  # Verify folder structure and ensure 'DocFX' is present
 
     - name: Install .NET SDK
       uses: actions/setup-dotnet@v3
@@ -20,7 +25,7 @@ jobs:
       run: dotnet tool install -g docfx
 
     - name: Build Documentation
-      run: docfx build DocFX  # Use the correct path here
+      run: docfx build DocFX  # Point to the correct path
 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4

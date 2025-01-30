@@ -4,22 +4,25 @@ on:
   workflow_dispatch:
     inputs:
       release_version:
-        description: "Release version (e.g., v1.0.0)"
+        description: "Release version (e.g., 1.0.0)"
         required: true
 
 jobs:
-  build:
+  build-and-release:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
+      # Step 2: Setup .NET
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0'
 
+      # Step 3: Publish binaries for Windows, macOS, and Linux
       - name: Publish Windows Binary
         run: dotnet publish -c Release -r win-x64 --self-contained true -o publish/windows
 
@@ -29,25 +32,15 @@ jobs:
       - name: Publish Linux Binary
         run: dotnet publish -c Release -r linux-x64 --self-contained true -o publish/linux
 
-      - name: Configure Git for Tagging
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-
-      - name: Create and Push Git Tag
-        run: |
-          git tag ${{ github.event.inputs.release_version }}
-          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} ${{ github.event.inputs.release_version }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}  # Make sure the PAT is used here
-
-      - name: Upload Release Binaries
+      # Step 4: Create a GitHub Release and upload binaries
+      - name: Create Release and Upload Binaries
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.event.inputs.release_version }}
+          name: "Release ${{ github.event.inputs.release_version }}"
+          tag_name: ${{ github.event.inputs.release_version }}  # Use version input directly for the release name and tag
           files: |
             publish/windows/*
             publish/macos/*
             publish/linux/*
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub's default token for release upload
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub's default token for the release upload

@@ -1,46 +1,37 @@
-name: Build and Release CLI Tool
-
-on:
-  workflow_dispatch:
-    inputs:
-      release_version:
-        description: "Release version (e.g., 1.0.0)"
-        required: true
-
 jobs:
-  build-and-release:
+  build-and-publish:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        os: [win-x64, linux-x64, osx-x64] # Platforms to target
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Setup .NET
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0'
+          dotnet-version: 8.0.x
 
-      # Step 3: Publish binaries for Windows, macOS, and Linux
-      - name: Publish Windows Binary
-        run: dotnet publish -c Release -r win-x64 --self-contained true -o publish/windows
+      - name: Restore dependencies
+        run: dotnet restore
 
-      - name: Publish macOS Binary
-        run: dotnet publish -c Release -r osx-x64 --self-contained true -o publish/macos
-
-      - name: Publish Linux Binary
-        run: dotnet publish -c Release -r linux-x64 --self-contained true -o publish/linux
-
-      # Step 4: Create a GitHub Release and upload binaries
-      - name: Create Release and Upload Binaries
-        uses: softprops/action-gh-release@v2
-        with:
-          name: "Release ${{ github.event.inputs.release_version }}"
-          tag_name: ${{ github.event.inputs.release_version }}  # Use version input directly for the release name and tag
-          files: |
-            publish/windows/*
-            publish/macos/*
-            publish/linux/*
+      - name: Publish self-contained binary
+        run: |
+          dotnet publish -c Release -r ${{ matrix.os }} --self-contained true /p:PublishSingleFile=true /p:IncludeAllContentForSelfExtract=true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub's default token for the release upload
+          DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
+      - name: Archive binary
+        run: |
+          zip -j "${{ matrix.os }}-demoCLI.zip" bin/Release/net8.0/${{ matrix.os }}/*
+        if: runner.os == 'Windows'
+
+      - name: Upload release assets
+        uses: actions/upload-release-asset@v3
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          release_id: ${{ steps.create_release.outputs.id }}
+          asset_path: ./${{ matrix.os }}-demoCLI.zip
+          asset_name: demoCLI-${{ matrix.os }}.zip
+          content_type: application/zip

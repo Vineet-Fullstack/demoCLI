@@ -19,11 +19,8 @@ jobs:
     - name: Install DocFX
       run: dotnet tool install -g docfx
 
-    - name: Debug Folder Structure
-      run: ls -R demoCLI/DocFX  # Check the contents of the folder to confirm docfx.json is present
-
     - name: Build Documentation
-      run: docfx build demoCLI/DocFX  # Correct path to the DocFX folder
+      run: docfx build DocFX  # Use the correct path here
 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4

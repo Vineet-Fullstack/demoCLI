@@ -2,6 +2,10 @@ name: Build and Release CLI Tool
 
 on:
   workflow_dispatch:
+    inputs:
+      release_version:
+        description: "Release version (e.g., v1.0.0)"
+        required: true
 
 jobs:
   build:
@@ -25,9 +29,17 @@ jobs:
       - name: Publish Linux Binary
         run: dotnet publish -c Release -r linux-x64 --self-contained true -o publish/linux
 
+      - name: Create Git Tag (Required for GitHub Release)
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git tag ${{ github.event.inputs.release_version }}
+          git push origin ${{ github.event.inputs.release_version }}
+
       - name: Upload Release Binaries
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.event.inputs.release_version }}
           files: |
             publish/windows/*
             publish/macos/*

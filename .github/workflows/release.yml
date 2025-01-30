@@ -1,86 +1,64 @@
-name: Create Release and Upload Assets
+name: Publish
 
 on:
-  push:
-    tags:
-      - 'v*'  # Trigger on tags like v1.0.0, v2.0.0, etc.
+  release:
+    types: [published]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  release:
+    name: Release
     strategy:
       matrix:
-        platform: [win-x64, linux-x64, osx-x64]
+        kind: ['linux', 'windows', 'macOS']
+        include:
+          - kind: linux
+            os: ubuntu-latest
+            target: linux-x64
+          - kind: windows
+            os: windows-latest
+            target: win-x64
+          - kind: macOS
+            os: macos-latest
+            target: osx-x64
+    runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up .NET
+      - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 8.0.x
 
-      - name: Build for ${{ matrix.platform }}
-        run: dotnet publish -c Release -r ${{ matrix.platform }} -o ./publish/${{ matrix.platform }}
+      - name: Restore dependencies
+        run: dotnet restore
 
-      - name: Zip binaries
+      - name: Build and Publish
+        shell: bash
         run: |
-          cd ./publish/${{ matrix.platform }}
-          zip -r ../${{ matrix.platform }}.zip .
-          cd ../..
+          # Get the tag name (e.g., v1.1.0)
+          tag=$(git describe --tags --abbrev=0)
+          release_name="demoCLI-${tag}-${{ matrix.target }}"
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.platform }}
-          path: ./publish/${{ matrix.platform }}.zip
+          # Publish the project for the specific runtime
+          dotnet publish src/demoCli/demoCli.csproj --framework net8.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" /p:PublishSingleFile=true /p:IncludeAllContentForSelfExtract=true
 
-  release:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          path: ./artifacts
+          # Create the release archive (zip for Windows, tar.gz for others)
+          if [ "${{ matrix.target }}" == "win-x64" ]; then
+            7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          else
+            tar czvf "${release_name}.tar.gz" "$release_name"
+          fi
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
+          # Clean up the published output
+          rm -r "$release_name"
 
       - name: Upload Release Assets
-        uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            demoCLI-${tag}-win-x64.zip
+            demoCLI-${tag}-linux-x64.tar.gz
+            demoCLI-${tag}-osx-x64.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/win-x64/win-x64.zip
-          asset_name: win-x64.zip
-          asset_content_type: application/zip
-
-      - name: Upload Release Assets
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/linux-x64/linux-x64.zip
-          asset_name: linux-x64.zip
-          asset_content_type: application/zip
-
-      - name: Upload Release Assets
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/osx-x64/osx-x64.zip
-          asset_name: osx-x64.zip
-          asset_content_type: application/zip

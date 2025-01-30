@@ -1,9 +1,10 @@
 name: Create Release and Upload Assets
 
 on:
+  workflow_dispatch:  # Allows manual triggering
   push:
     tags:
-      - 'v*'  # Trigger on tags like v1.0.0, v2.0.0, etc.
+      - 'v*'  # Also trigger on tags like v1.0.0, v2.0.0, etc.
 
 jobs:
   build:
@@ -18,10 +19,10 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 8.0.x  # Update to .NET 8.0
+          dotnet-version: 6.0.x
 
       - name: Build for ${{ matrix.platform }}
-        run: dotnet publish -c Release -r ${{ matrix.platform }} -o ./publish/${{ matrix.platform }} /p:PublishSingleFile=true /p:IncludeAllContentForSelfExtract=true
+        run: dotnet publish -c Release -r ${{ matrix.platform }} -o ./publish/${{ matrix.platform }}
 
       - name: Zip binaries
         run: |
@@ -55,32 +56,32 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload Release Assets for win-x64
+      - name: Upload Release Assets
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/win-x64.zip
+          asset_path: ./artifacts/win-x64/win-x64.zip
           asset_name: win-x64.zip
           asset_content_type: application/zip
 
-      - name: Upload Release Assets for linux-x64
+      - name: Upload Release Assets
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/linux-x64.zip
+          asset_path: ./artifacts/linux-x64/linux-x64.zip
           asset_name: linux-x64.zip
           asset_content_type: application/zip
 
-      - name: Upload Release Assets for osx-x64
+      - name: Upload Release Assets
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/osx-x64.zip
+          asset_path: ./artifacts/osx-x64/osx-x64.zip
           asset_name: osx-x64.zip
           asset_content_type: application/zip

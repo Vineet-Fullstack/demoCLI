@@ -1,62 +1,86 @@
-name: Build and Release CLI Tool
+name: Create Release and Upload Assets
 
 on:
-  workflow_dispatch:
-    inputs:
-      release_version:
-        description: "Release version (e.g., 1.0.0)"
-        required: true
+  push:
+    tags:
+      - 'v*'  # Trigger on tags like v1.0.0, v2.0.0, etc.
 
 jobs:
-  build-and-publish:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [win-x64, linux-x64, osx-x64] # Platforms to target
+        platform: [win-x64, linux-x64, osx-x64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup .NET
+      - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 6.0.x
 
-      - name: Restore dependencies
-        run: dotnet restore
+      - name: Build for ${{ matrix.platform }}
+        run: dotnet publish -c Release -r ${{ matrix.platform }} -o ./publish/${{ matrix.platform }}
 
-      - name: Publish self-contained binary
+      - name: Zip binaries
         run: |
-          dotnet publish -c Release -r ${{ matrix.os }} --self-contained true /p:PublishSingleFile=true /p:IncludeAllContentForSelfExtract=true
+          cd ./publish/${{ matrix.platform }}
+          zip -r ../${{ matrix.platform }}.zip .
+          cd ../..
 
-      - name: Archive binary
-        run: |
-          zip -j "${{ matrix.os }}-demoCLI.zip" bin/Release/net8.0/${{ matrix.os }}/*
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.platform }}
+          path: ./publish/${{ matrix.platform }}.zip
 
-      - name: Check if the tag already exists
-        run: |
-          if git tag -l "v${{ github.event.inputs.release_version }}" | grep -q "v${{ github.event.inputs.release_version }}"; then
-            echo "Tag v${{ github.event.inputs.release_version }} already exists. Exiting."
-            exit 1
-          fi
-        shell: bash
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: ./artifacts
 
-      - name: Create a Release
+      - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ github.event.inputs.release_version }}
-          release_name: Release v${{ github.event.inputs.release_version }}
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
 
-      - name: Upload release assets
+      - name: Upload Release Assets
         uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          release_id: ${{ steps.create_release.outputs.id }}
-          asset_path: ./${{ matrix.os }}-demoCLI.zip
-          asset_name: demoCLI-${{ matrix.os }}.zip
-          content_type: application/zip
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/win-x64/win-x64.zip
+          asset_name: win-x64.zip
+          asset_content_type: application/zip
+
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/linux-x64/linux-x64.zip
+          asset_name: linux-x64.zip
+          asset_content_type: application/zip
+
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/osx-x64/osx-x64.zip
+          asset_name: osx-x64.zip
+          asset_content_type: application/zip

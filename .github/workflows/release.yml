@@ -37,9 +37,9 @@ jobs:
       - name: Create and Push Git Tag
         run: |
           git tag ${{ github.event.inputs.release_version }}
-          git push origin ${{ github.event.inputs.release_version }}
+          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} ${{ github.event.inputs.release_version }}
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}  # Use Personal Access Token
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}  # Make sure the PAT is used here
 
       - name: Upload Release Binaries
         uses: softprops/action-gh-release@v2
@@ -50,4 +50,4 @@ jobs:
             publish/macos/*
             publish/linux/*
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub's default token for release upload

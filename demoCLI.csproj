@@ -10,10 +10,17 @@
     <!-- The NuGet package ID -->
     <Version>1.0.3</Version>
     <!-- The version of your tool -->
+    <MinVerTagPrefix>v</MinVerTagPrefix>
     <Authors>YourName</Authors>
     <Description>A demo CLI tool built with .NET 8.</Description>
     <PackageTags>cli, demo, dotnet</PackageTags>
     <PackageProjectUrl>https://github.com/Vineet-Fullstack/demoCLI</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Vineet-Fullstack/demoCLI</RepositoryUrl>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MinVer" Version="6.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
 </Project>

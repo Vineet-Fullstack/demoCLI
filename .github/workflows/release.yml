@@ -1,64 +1,86 @@
-name: Publish
+name: Create Release and Upload Assets
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - 'v*'  # Trigger on tags like v1.0.0, v2.0.0, etc.
 
 jobs:
-  release:
-    name: Release
+  build:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        kind: ['linux', 'windows', 'macOS']
-        include:
-          - kind: linux
-            os: ubuntu-latest
-            target: linux-x64
-          - kind: windows
-            os: windows-latest
-            target: win-x64
-          - kind: macOS
-            os: macos-latest
-            target: osx-x64
-    runs-on: ${{ matrix.os }}
+        platform: [win-x64, linux-x64, osx-x64]
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup .NET
+      - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 8.0.x  # Update to .NET 8.0
 
-      - name: Restore dependencies
-        run: dotnet restore
+      - name: Build for ${{ matrix.platform }}
+        run: dotnet publish -c Release -r ${{ matrix.platform }} -o ./publish/${{ matrix.platform }} /p:PublishSingleFile=true /p:IncludeAllContentForSelfExtract=true
 
-      - name: Build and Publish
-        shell: bash
+      - name: Zip binaries
         run: |
-          # Get the tag name (e.g., v1.1.0)
-          tag=$(git describe --tags --abbrev=0)
-          release_name="demoCLI-${tag}-${{ matrix.target }}"
+          cd ./publish/${{ matrix.platform }}
+          zip -r ../${{ matrix.platform }}.zip .
+          cd ../..
 
-          # Publish the project for the specific runtime
-          dotnet publish src/demoCli/demoCli.csproj --framework net8.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" /p:PublishSingleFile=true /p:IncludeAllContentForSelfExtract=true
-
-          # Create the release archive (zip for Windows, tar.gz for others)
-          if [ "${{ matrix.target }}" == "win-x64" ]; then
-            7z a -tzip "${release_name}.zip" "./${release_name}/*"
-          else
-            tar czvf "${release_name}.tar.gz" "$release_name"
-          fi
-
-          # Clean up the published output
-          rm -r "$release_name"
-
-      - name: Upload Release Assets
-        uses: softprops/action-gh-release@v1
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
         with:
-          files: |
-            demoCLI-${tag}-win-x64.zip
-            demoCLI-${tag}-linux-x64.tar.gz
-            demoCLI-${tag}-osx-x64.tar.gz
+          name: ${{ matrix.platform }}
+          path: ./publish/${{ matrix.platform }}.zip
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: ./artifacts
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Assets for win-x64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/win-x64.zip
+          asset_name: win-x64.zip
+          asset_content_type: application/zip
+
+      - name: Upload Release Assets for linux-x64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/linux-x64.zip
+          asset_name: linux-x64.zip
+          asset_content_type: application/zip
+
+      - name: Upload Release Assets for osx-x64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/osx-x64.zip
+          asset_name: osx-x64.zip
+          asset_content_type: application/zip

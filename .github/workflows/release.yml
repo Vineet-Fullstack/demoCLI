@@ -1,3 +1,12 @@
+name: Build and Release CLI Tool
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: "Release version (e.g., 1.0.0)"
+        required: true
+
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest

@@ -33,14 +33,22 @@ jobs:
         run: |
           zip -j "${{ matrix.os }}-demoCLI.zip" bin/Release/net8.0/${{ matrix.os }}/*
 
+      - name: Check if the tag already exists
+        run: |
+          if git tag -l "v${{ github.event.inputs.release_version }}" | grep -q "v${{ github.event.inputs.release_version }}"; then
+            echo "Tag v${{ github.event.inputs.release_version }} already exists. Exiting."
+            exit 1
+          fi
+        shell: bash
+
       - name: Create a Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.0.0
-          release_name: Release v1.0.0
+          tag_name: v${{ github.event.inputs.release_version }}
+          release_name: Release v${{ github.event.inputs.release_version }}
           draft: false
           prerelease: false
 
@@ -52,4 +60,3 @@ jobs:
           asset_path: ./${{ matrix.os }}-demoCLI.zip
           asset_name: demoCLI-${{ matrix.os }}.zip
           content_type: application/zip
-

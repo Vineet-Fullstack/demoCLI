@@ -8,7 +8,7 @@
     <!-- The command name for your tool -->
     <PackageId>demoCli</PackageId>
     <!-- The NuGet package ID -->
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <!-- The version of your tool -->
     <Authors>YourName</Authors>
     <Description>A demo CLI tool built with .NET 8.</Description>

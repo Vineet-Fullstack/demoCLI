@@ -1,0 +1,36 @@
+name: Build and Release CLI Tool
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0'
+
+      - name: Publish Windows Binary
+        run: dotnet publish -c Release -r win-x64 --self-contained true -o publish/windows
+
+      - name: Publish macOS Binary
+        run: dotnet publish -c Release -r osx-x64 --self-contained true -o publish/macos
+
+      - name: Publish Linux Binary
+        run: dotnet publish -c Release -r linux-x64 --self-contained true -o publish/linux
+
+      - name: Upload Release Binaries
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            publish/windows/*
+            publish/macos/*
+            publish/linux/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

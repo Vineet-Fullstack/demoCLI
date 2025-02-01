@@ -1,34 +1,30 @@
 name: Publish Docker Image
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # Allow manual triggering
     inputs:
-      tag:
-        description: "Enter Docker image tag (e.g., v1.0.0 or latest)"
+      docker_tag:
+        description: 'Docker image tag (e.g., 1.0, latest)'
         required: true
-        default: "latest"
+        default: 'latest'
+        type: string
 
 jobs:
-  build-and-push:
+  build:
     runs-on: ubuntu-latest
     environment: QA
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Log in to Docker Hub
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: Build Docker image
-        run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/democli:${{ github.event.inputs.tag }} .
-          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/democli:${{ github.event.inputs.tag }} ${{ secrets.DOCKERHUB_USERNAME }}/democli:latest
-
-      - name: Push Docker image
-        run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/democli:${{ github.event.inputs.tag }}
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/democli:latest
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/demo-cli:${{ github.event.inputs.docker_tag }}

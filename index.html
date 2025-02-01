@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Welcome to demoCLI Documentation | demoCli </title>
+      <title> | demoCli </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Welcome to demoCLI Documentation | demoCli ">
+      <meta name="title" content=" | demoCli ">
       
       
       <link rel="icon" href="favicon.ico">
@@ -71,18 +71,117 @@
         </div>
 
         <article data-uid="">
-<h1 id="welcome-to-democli-documentation">Welcome to demoCLI Documentation</h1>
 
-<p><code>demoCLI</code> is a simple .NET CLI tool that helps you execute basic commands from the terminal.</p>
-<h2 id="features">Features</h2>
+<pre><code class="lang-markdown"># Getting Started with demoCLI
+
+This guide will walk you through the installation of the demoCLI tool using various methods and how to test the installation.
+
+---
+
+## Installation Options
+
+### Homebrew (macOS and Linux)
+
+To install demoCLI using Homebrew, run the following command in your terminal:
+
+```bash
+brew install Vineet-Fullstack/homebrew-demoCLI/demoCLI
+</code></pre>
+<p><strong>Test the installation:</strong></p>
+<pre><code class="lang-bash">demoCLI hello
+demoCLI version
+</code></pre>
+<hr>
+<h3 id="direct-download">Direct Download</h3>
+<p>You can download the pre-built binaries for your operating system from the <a href="https://github.com/Vineet-Fullstack/demoCLI/releases/tag/v1.0.18">GitHub Releases</a> page.</p>
+<h4 id="macos">macOS</h4>
+<ol>
+<li>Download the <code>osx-x64.zip</code> file.</li>
+<li>Extract the zip file.</li>
+<li>Move the extracted binary to a directory included in your system's <code>PATH</code>.</li>
+</ol>
+<pre><code class="lang-bash">unzip osx-x64.zip
+sudo mv demoCLI /usr/local/bin/
+</code></pre>
+<p><strong>Test the installation:</strong></p>
+<pre><code class="lang-bash">demoCLI hello
+demoCLI version
+</code></pre>
+<h4 id="linux">Linux</h4>
+<ol>
+<li>Download the <code>linux-x64.zip</code> file.</li>
+<li>Extract the zip file.</li>
+<li>Move the extracted binary to a directory included in your system's <code>PATH</code>.</li>
+</ol>
+<pre><code class="lang-bash">unzip linux-x64.zip
+sudo mv demoCLI /usr/local/bin/
+</code></pre>
+<p><strong>Test the installation:</strong></p>
+<pre><code class="lang-bash">demoCLI hello
+demoCLI version
+</code></pre>
+<h4 id="windows">Windows</h4>
+<ol>
+<li>Download the <code>win-x64.zip</code> file.</li>
+<li>Extract the zip file.</li>
+<li>Add the extracted binary to your system's <code>PATH</code>.</li>
+</ol>
+<p><strong>Test the installation:</strong></p>
+<pre><code class="lang-powershell">demoCLI hello
+demoCLI version
+</code></pre>
+<hr>
+<h3 id="docker">Docker</h3>
+<p>You can also run demoCLI using Docker. First, pull the Docker image:</p>
+<pre><code class="lang-bash">docker pull vineetpatel03/democli:latest
+</code></pre>
+<p>Then, run the container:</p>
+<pre><code class="lang-bash">docker run -it vineetpatel03/democli:latest
+</code></pre>
+<p><strong>Test the installation:</strong></p>
+<pre><code class="lang-bash">demoCLI hello
+demoCLI version
+</code></pre>
+<hr>
+<h3 id="source-code">Source Code</h3>
+<p>If you prefer to build from source, you can download the source code from the <a href="https://github.com/Vineet-Fullstack/demoCLI/releases/tag/v1.0.18">GitHub Releases</a> page.</p>
+<h4 id="building-from-source">Building from Source</h4>
+<ol>
+<li>Download the <code>Source code (zip)</code> or <code>Source code (tar.gz)</code> file.</li>
+<li>Extract the archive.</li>
+<li>Navigate to the extracted directory and build the project.</li>
+</ol>
+<pre><code class="lang-bash">unzip demoCLI-1.0.18.zip
+cd demoCLI-1.0.18
+./build.sh  # or the appropriate build command for your project
+</code></pre>
+<p><strong>Test the installation:</strong></p>
+<pre><code class="lang-bash">demoCLI hello
+demoCLI version
+</code></pre>
+<hr>
+<h2 id="verifying-the-installation">Verifying the Installation</h2>
+<p>To verify that demoCLI has been installed correctly, run the following commands:</p>
+<pre><code class="lang-bash">demoCLI hello
+demoCLI version
+</code></pre>
 <ul>
-<li>Check the tool version.</li>
-<li>Display a greeting message.</li>
-<li>Easy installation and usage.</li>
+<li>The <code>demoCLI hello</code> command should display a greeting message.</li>
+<li>The <code>demoCLI version</code> command should display the installed version of demoCLI.</li>
 </ul>
-<h2 id="installation">Installation</h2>
-<p>To install <code>demoCLI</code> as a global .NET tool, run:</p>
-<pre><code class="lang-sh">dotnet tool install --global demoCli
+<hr>
+<h2 id="next-steps">Next Steps</h2>
+<p>Now that you have demoCLI installed, you can start using it to interact with your services. For more information on how to use demoCLI, refer to the <a href="#">official documentation</a>.</p>
+<pre><code>
+### Key Features of the `.md` File:
+1. **Installation Options**: Covers Homebrew, direct downloads (macOS, Linux, Windows), Docker, and building from source.
+2. **Testing Commands**: Includes `demoCLI hello` and `demoCLI version` for each installation method to verify the installation.
+3. **Ready for DocFX**: The file is formatted for use in DocFX and can be placed in your documentation repository.
+
+### How to Use:
+- Save this content as `gettingstarted.md` in your DocFX project.
+- Update the links and commands if necessary to match your project's specifics.
+- Build and publish your DocFX documentation to make it available to users.
 </code></pre>
 
 </article>

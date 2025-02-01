@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*'  # Trigger on tags like v1.0.0, v2.0.0, etc.
+
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
@@ -121,6 +122,9 @@ jobs:
         with:
           repository: Vineet-Fullstack/homebrew-demoCLI
           path: homebrew-demoCLI
+
+      - name: Set up GitHub token for pushing changes
+        run: git config --global user.token ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get release info
         id: get_release

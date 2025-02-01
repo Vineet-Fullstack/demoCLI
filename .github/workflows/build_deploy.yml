@@ -3,13 +3,12 @@ name: CI/CD Pipeline
 on:
   push:
     tags:
-      - 'v*'  # Trigger on tags like v1.0.0, v2.0.0, etc.
+      - 'v*'  # Trigger on version tags like v1.0.0, v2.0.0, etc.
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
-    environment: QA  # Specify the environment (e.g., QA)
-
+    environment: QA  # Ensure secrets come from QA
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -17,7 +16,7 @@ jobs:
       - name: Set up .NET 8 SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.x'  # Adjust to your target .NET version
+          dotnet-version: '8.x'
 
       - name: Restore dependencies
         run: dotnet restore
@@ -30,15 +29,15 @@ jobs:
 
       - name: Publish to NuGet
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}  # Reference the secret from the QA environment
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: dotnet nuget push ./nupkgs/*.nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json
 
   build-release-assets:
     runs-on: ubuntu-latest
-    needs: build-and-publish  # Wait for the build-and-publish job to complete
+    needs: build-and-publish
     strategy:
       matrix:
-        platform: [win-x64, linux-x64, osx-x64]  # Target platforms
+        platform: [win-x64, linux-x64, osx-x64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -65,7 +64,7 @@ jobs:
 
   create-release:
     runs-on: ubuntu-latest
-    needs: build-release-assets  # Wait for the build-release-assets job to complete
+    needs: build-release-assets
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
@@ -78,12 +77,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.inputs.tag_name || github.ref_name }}  # Use input or tag name
-          release_name: Release ${{ github.event.inputs.tag_name || github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
 
-      - name: Upload Release Assets
+      - name: Upload Release Assets (Windows)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -93,7 +92,7 @@ jobs:
           asset_name: win-x64.zip
           asset_content_type: application/zip
 
-      - name: Upload Release Assets
+      - name: Upload Release Assets (Linux)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -103,7 +102,7 @@ jobs:
           asset_name: linux-x64.zip
           asset_content_type: application/zip
 
-      - name: Upload Release Assets
+      - name: Upload Release Assets (macOS)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -115,16 +114,15 @@ jobs:
 
   update-homebrew-formula:
     runs-on: ubuntu-latest
-    needs: create-release  # Wait for the create-release job to complete
+    needs: create-release
+    environment: QA  # Ensure secrets come from QA
     steps:
       - name: Checkout homebrew-demoCLI repository
         uses: actions/checkout@v3
         with:
           repository: Vineet-Fullstack/homebrew-demoCLI
           path: homebrew-demoCLI
-        
-      - name: Set up GitHub token for pushing changes
-        run: git config --global user.token ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}  # Ensure authentication
 
       - name: Get the latest release version from demoCLI repository
         id: get_release
@@ -155,6 +153,6 @@ jobs:
           git config --global user.email "actions@github.com"
           git add Formula/demoCLI.rb
           git commit -m "Update demoCLI to ${{ env.VERSION }}"
-          git push https://github-actions:${{ secrets.PAT_TOKEN }}@github.com/Vineet-Fullstack/homebrew-demoCLI.git HEAD:main
+          git push origin main
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}

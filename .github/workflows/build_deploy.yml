@@ -117,9 +117,9 @@ jobs:
     needs: create-release  # Wait for the create-release job to complete
     steps:
       - name: Checkout homebrew-demoCLI
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3s
         with:
-          repository: yourusername/homebrew-demoCLI
+          repository: Vineet-Fullstack/homebrew-demoCLI
           path: homebrew-demoCLI
 
       - name: Get release info

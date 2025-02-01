@@ -12,9 +12,9 @@ With demoCLI, you can streamline your development, testing, and automation proce
 
 - **Simple Installation**: Install demoCLI using Homebrew, Docker, or by downloading pre-built binaries.
 - **Cross-Platform**: Works seamlessly on macOS, Linux, and Windows.
-- **Command-Line Power**: Execute commands like `demoCLI hello`, `demoCLI version`, and more to interact with your resources.
-- **Docker Support**: Run demoCLI in containers using Docker for a hassle-free setup.
-- **Customizable**: Build demoCLI from source to tailor it to your specific needs.
+- **Command-Line Power**: Execute commands like `democli hello`, `democli version`, and more to interact with your resources.
+- **Docker Support**: Run democli in containers using Docker for a hassle-free setup.
+- **Customizable**: Build democli from source to tailor it to your specific needs.
 
 ---
 
@@ -31,7 +31,7 @@ demoCLI was created with developers and system administrators in mind. It helps 
 
 ## 🖥️ **Getting Started**
 
-Check out the **[Getting Started](gettingstarted.md)** guide to install demoCLI and verify that it’s working on your system. The guide provides detailed instructions for each installation method.
+Check out the **[Getting Started](getting-started.html)** guide to install demoCLI and verify that it’s working on your system. The guide provides detailed instructions for each installation method.
 
 ---
 
@@ -48,8 +48,7 @@ This repository contains comprehensive documentation to help you get the most ou
 
 ## 🎯 **Next Steps**
 
-1. Install demoCLI using one of the methods in the **[Getting Started](gettingstarted.md)** guide.
-2. Check the **[Usage Guide](usageguide.md)** to explore the full range of demoCLI’s commands.
+1. Install demoCLI using one of the methods in the **[Getting Started](getting-started.html)** guide.
 3. Visit the **[GitHub Repository](https://github.com/Vineet-Fullstack/demoCLI)** for the latest updates, source code, and contributions.
 
 ---

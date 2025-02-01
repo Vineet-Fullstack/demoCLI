@@ -1,14 +1,18 @@
 name: Publish Docker Image
 
 on:
-  workflow_dispatch:  
-  release:
-    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Enter Docker image tag (e.g., v1.0.0 or latest)"
+        required: true
+        default: "latest"
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
     environment: QA
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -19,14 +23,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Extract version from release tag
-        id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-
       - name: Build Docker image
-        run: docker build -t vineetpatel03/democli:${{ env.VERSION }} -t vineetpatel03/democli:latest .
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/democli:${{ github.event.inputs.tag }} .
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/democli:${{ github.event.inputs.tag }} ${{ secrets.DOCKERHUB_USERNAME }}/democli:latest
 
       - name: Push Docker image
         run: |
-          docker push vineetpatel03/democli:${{ env.VERSION }}
-          docker push vineetpatel03/democli:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/democli:${{ github.event.inputs.tag }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/democli:latest

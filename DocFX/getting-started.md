@@ -1,5 +1,4 @@
-﻿```markdown
-# 🚀 **Getting Started with demoCLI** 
+﻿# 🚀 **Getting Started with demoCLI**
 
 Welcome to **demoCLI**! Follow this guide to install the demoCLI tool, and start using it with various installation methods.
 

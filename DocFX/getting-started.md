@@ -25,6 +25,8 @@ After installation, test it using these commands:
 
 ```bash
 democli hello
+```
+```bash
 democli version
 ```
 
@@ -65,6 +67,8 @@ sudo mv demoCLI /usr/local/bin/
 
 ```powershell
 democli hello
+```
+```powershell
 democli version
 ```
 
@@ -88,6 +92,8 @@ docker run -it vineetpatel03/democli:latest
 
 ```bash
 democli hello
+```
+```bash
 democli version
 ```
 
@@ -110,6 +116,8 @@ cd demoCLI-1.0.18
 
 ```bash
 democli hello
+```
+```bash
 democli version
 ```
 
@@ -121,6 +129,8 @@ To verify the installation, execute the following commands:
 
 ```bash
 democli hello
+```
+```bash
 democli version
 ```
 

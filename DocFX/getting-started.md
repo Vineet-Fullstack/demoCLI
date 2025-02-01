@@ -1,87 +1,78 @@
 ﻿```markdown
-# Getting Started with demoCLI
+# 🚀 **Getting Started with demoCLI** 
 
-This guide will walk you through the installation of the demoCLI tool using various methods and how to test the installation.
+Welcome to **demoCLI**! Follow this guide to install the demoCLI tool, and start using it with various installation methods.
 
 ---
 
-## Installation Options
+## 📦 **Installation Options**
 
-### Homebrew (macOS and Linux)
+Choose your preferred installation method based on your operating system.
 
-To install demoCLI using Homebrew, run the following command in your terminal:
+---
+
+### 🍺 **Homebrew (macOS and Linux)**
+
+To install demoCLI with Homebrew, run the following command:
 
 ```bash
 brew install Vineet-Fullstack/homebrew-demoCLI/demoCLI
 ```
 
-**Test the installation:**
+#### ✅ Test Installation
+
+After installation, test it using these commands:
 
 ```bash
-demoCLI hello
-demoCLI version
+democli hello
+democli version
 ```
+
+> **Note**: If Homebrew isn't installed, you can get it from [brew.sh](https://brew.sh).
 
 ---
 
-### Direct Download
+### ⬇️ **Direct Download**
 
-You can download the pre-built binaries for your operating system from the [GitHub Releases](https://github.com/Vineet-Fullstack/demoCLI/releases/tag/v1.0.18) page.
+You can download the pre-built binaries directly from the [GitHub Releases](https://github.com/Vineet-Fullstack/demoCLI/releases/tag/v1.0.18).
 
-#### macOS
+#### 🍏 **macOS** 
 
-1. Download the `osx-x64.zip` file.
-2. Extract the zip file.
-3. Move the extracted binary to a directory included in your system's `PATH`.
+1. Download `osx-x64.zip`.
+2. Extract and move the binary to a directory in your system's `PATH`.
 
 ```bash
 unzip osx-x64.zip
 sudo mv demoCLI /usr/local/bin/
 ```
 
-**Test the installation:**
+#### 🐧 **Linux**
 
-```bash
-demoCLI hello
-demoCLI version
-```
-
-#### Linux
-
-1. Download the `linux-x64.zip` file.
-2. Extract the zip file.
-3. Move the extracted binary to a directory included in your system's `PATH`.
+1. Download `linux-x64.zip`.
+2. Extract and move the binary to a directory in your system's `PATH`.
 
 ```bash
 unzip linux-x64.zip
 sudo mv demoCLI /usr/local/bin/
 ```
 
-**Test the installation:**
+#### 🪟 **Windows**
 
-```bash
-demoCLI hello
-demoCLI version
-```
-
-#### Windows
-
-1. Download the `win-x64.zip` file.
-2. Extract the zip file.
-3. Add the extracted binary to your system's `PATH`.
+1. Download `win-x64.zip`.
+2. Extract and add the binary to your `PATH`.
 
 **Test the installation:**
 
 ```powershell
-demoCLI hello
-demoCLI version
+democli hello
+democli version
 ```
 
 ---
 
-### Docker
+### 🐳 **Docker Installation**
 
-You can also run demoCLI using Docker. First, pull the Docker image:
+You can run demoCLI through Docker. First, pull the image:
 
 ```bash
 docker pull vineetpatel03/democli:latest
@@ -93,66 +84,61 @@ Then, run the container:
 docker run -it vineetpatel03/democli:latest
 ```
 
-**Test the installation:**
+**Test the installation**:
 
 ```bash
-demoCLI hello
-demoCLI version
+democli hello
+democli version
 ```
 
 ---
 
-### Source Code
+### 🛠️ **Build from Source**
 
-If you prefer to build from source, you can download the source code from the [GitHub Releases](https://github.com/Vineet-Fullstack/demoCLI/releases/tag/v1.0.18) page.
+If you prefer to build demoCLI from source:
 
-#### Building from Source
-
-1. Download the `Source code (zip)` or `Source code (tar.gz)` file.
-2. Extract the archive.
-3. Navigate to the extracted directory and build the project.
+1. Download the source code from the [GitHub Releases](https://github.com/Vineet-Fullstack/demoCLI/releases/tag/v1.0.18).
+2. Extract and build the project.
 
 ```bash
 unzip demoCLI-1.0.18.zip
 cd demoCLI-1.0.18
-./build.sh  # or the appropriate build command for your project
+./build.sh  # or appropriate build command
 ```
 
 **Test the installation:**
 
 ```bash
-demoCLI hello
-demoCLI version
+democli hello
+democli version
 ```
 
 ---
 
-## Verifying the Installation
+## ✅ **Verifying the Installation**
 
-To verify that demoCLI has been installed correctly, run the following commands:
+To verify the installation, execute the following commands:
 
 ```bash
-demoCLI hello
-demoCLI version
+democli hello
+democli version
 ```
 
-- The `demoCLI hello` command should display a greeting message.
-- The `demoCLI version` command should display the installed version of demoCLI.
+- The `hello` command should display a greeting message.
+- The `version` command should show the installed version.
 
 ---
 
-## Next Steps
+## 🚀 **Next Steps**
 
-Now that you have demoCLI installed, you can start using it to interact with your services. For more information on how to use demoCLI, refer to the [official documentation](#).
+Once demoCLI is installed, you’re ready to begin interacting with your services. For more details, check out the [official documentation](#).
 
-```
+---
 
-### Key Features of the `.md` File:
-1. **Installation Options**: Covers Homebrew, direct downloads (macOS, Linux, Windows), Docker, and building from source.
-2. **Testing Commands**: Includes `demoCLI hello` and `demoCLI version` for each installation method to verify the installation.
-3. **Ready for DocFX**: The file is formatted for use in DocFX and can be placed in your documentation repository.
+> **Tip**: Facing issues during installation? Check the [GitHub Issues](https://github.com/Vineet-Fullstack/demoCLI/issues) or open a new issue.
 
-### How to Use:
-- Save this content as `gettingstarted.md` in your DocFX project.
-- Update the links and commands if necessary to match your project's specifics.
-- Build and publish your DocFX documentation to make it available to users.
+---
+
+🎉 **Congratulations! You're now ready to use demoCLI!** 🎉
+
+---

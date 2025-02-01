@@ -10,7 +10,7 @@ Whether you're a developer, system administrator, or DevOps engineer, demoCLI pr
 
 To get started quickly with demoCLI, check out the following guides:
 
-- **[Getting Started](gettingstarted.md)**: Install demoCLI and verify it's working on your system.
+- **[Getting Started](getting-started.html)**: Install demoCLI and verify it's working on your system.
 
 ---
 
@@ -48,9 +48,7 @@ Easily integrate demoCLI into your CI/CD pipelines for automated workflows and r
 
 ## 📚 Documentation Overview
 
-- **[Installation Options](gettingstarted.md)**: Various ways to install demoCLI on your system.
-- **[Commands Reference](apireference.md)**: A comprehensive list of demoCLI commands and their syntax.
-- **[Contributing](contributing.md)**: Learn how to contribute to demoCLI’s development.
+- **[Installation Options](getting-started.html)**: Various ways to install demoCLI on your system.
 
 ---
 

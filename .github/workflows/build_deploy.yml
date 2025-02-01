@@ -117,23 +117,32 @@ jobs:
     runs-on: ubuntu-latest
     needs: create-release  # Wait for the create-release job to complete
     steps:
-      - name: Checkout homebrew-demoCLI
+      - name: Checkout homebrew-demoCLI repository
         uses: actions/checkout@v3
         with:
           repository: Vineet-Fullstack/homebrew-demoCLI
           path: homebrew-demoCLI
-
+        
       - name: Set up GitHub token for pushing changes
         run: git config --global user.token ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get release info
+      - name: Get the latest release version from demoCLI repository
         id: get_release
         run: |
-          echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
-          echo "URL=https://github.com/${{ github.repository }}/releases/download/v${{ env.VERSION }}/osx-x64.zip" >> $GITHUB_ENV
-          echo "SHA256=$(curl -sL ${{ env.URL }} | shasum -a 256 | awk '{print $1}')" >> $GITHUB_ENV
+          VERSION=$(curl -s "https://api.github.com/repos/Vineet-Fullstack/demoCLI/releases/latest" | jq -r .tag_name)
+          DOWNLOAD_URL="https://github.com/Vineet-Fullstack/demoCLI/releases/download/${VERSION}/osx-x64.zip"
+          SHA256=$(curl -sL ${DOWNLOAD_URL} | shasum -a 256 | awk '{print $1}')
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "URL=${DOWNLOAD_URL}" >> $GITHUB_ENV
+          echo "SHA256=${SHA256}" >> $GITHUB_ENV
 
-      - name: Update formula
+      - name: Debug - Print the fetched values
+        run: |
+          echo "Version: ${{ env.VERSION }}"
+          echo "URL: ${{ env.URL }}"
+          echo "SHA256: ${{ env.SHA256 }}"
+
+      - name: Update Homebrew formula (demoCLI.rb)
         run: |
           sed -i "s|url .*|url \"${{ env.URL }}\"|" homebrew-demoCLI/Formula/demoCLI.rb
           sed -i "s|sha256 .*|sha256 \"${{ env.SHA256 }}\"|" homebrew-demoCLI/Formula/demoCLI.rb

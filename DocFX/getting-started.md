@@ -1,6 +1,4 @@
-﻿Here’s the complete `.md` file with all installation options and commands for testing the installation (`demoCLI hello` and `demoCLI version`). This file is ready to be used in your DocFX documentation.
-
-```markdown
+﻿```markdown
 # Getting Started with demoCLI
 
 This guide will walk you through the installation of the demoCLI tool using various methods and how to test the installation.

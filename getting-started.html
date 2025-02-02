@@ -78,11 +78,29 @@
 <h2 id="-installation-options">📦 <strong>Installation Options</strong></h2>
 <p>Choose your preferred installation method based on your operating system.</p>
 <hr>
+<h3 id="-net-tool-cross-platform">⚙️ <strong>.NET Tool (Cross-Platform)</strong></h3>
+<h4 id="-prerequisite-install-net-sdk">🔹 <strong>Prerequisite: Install .NET SDK</strong></h4>
+<p>Before installing <strong>demoCLI</strong>, ensure you have the <strong>.NET SDK (version 8 or later)</strong> installed.<br>
+If not, install it from the official <a href="https://dotnet.microsoft.com/download/dotnet/8.0">Microsoft .NET Download Page</a>.</p>
+<p>To verify if .NET is installed, run:</p>
+<pre><code class="lang-bash">dotnet --version
+</code></pre>
+<p>You can install demoCLI as a .NET Global Tool, making it available system-wide on Windows, macOS, and Linux., run the following command:</p>
+<pre><code class="lang-bash">dotnet tool install --global demoCli --version 1.0.18
+</code></pre>
+<pre><code class="lang-bash">dotnet tool update --global demoCli
+</code></pre>
+<h4 id="-test-installation">✅ Test Installation</h4>
+<p>After installation, test it using these commands:</p>
+<pre><code class="lang-bash">democli hello
+</code></pre>
+<pre><code class="lang-bash">democli version
+</code></pre>
 <h3 id="-homebrew-macos-and-linux">🍺 <strong>Homebrew (macOS and Linux)</strong></h3>
 <p>To install demoCLI with Homebrew, run the following command:</p>
 <pre><code class="lang-bash">brew install Vineet-Fullstack/homebrew-demoCLI/demoCLI
 </code></pre>
-<h4 id="-test-installation">✅ Test Installation</h4>
+<h4 id="-test-installation-1">✅ Test Installation</h4>
 <p>After installation, test it using these commands:</p>
 <pre><code class="lang-bash">democli hello
 </code></pre>

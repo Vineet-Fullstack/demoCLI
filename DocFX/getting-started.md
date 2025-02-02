@@ -10,6 +10,38 @@ Choose your preferred installation method based on your operating system.
 
 ---
 
+### ⚙️ **.NET Tool (Cross-Platform)**
+
+#### 🔹 **Prerequisite: Install .NET SDK**  
+
+Before installing **demoCLI**, ensure you have the **.NET SDK (version 8 or later)** installed.  
+If not, install it from the official [Microsoft .NET Download Page](https://dotnet.microsoft.com/download/dotnet/8.0).  
+
+To verify if .NET is installed, run:  
+
+```bash
+dotnet --version
+```
+You can install demoCLI as a .NET Global Tool, making it available system-wide on Windows, macOS, and Linux., run the following command:
+
+```bash
+dotnet tool install --global demoCli --version 1.0.18
+```
+```bash
+dotnet tool update --global demoCli
+```
+
+#### ✅ Test Installation
+
+After installation, test it using these commands:
+
+```bash
+democli hello
+```
+```bash
+democli version
+```
+
 ### 🍺 **Homebrew (macOS and Linux)**
 
 To install demoCLI with Homebrew, run the following command:

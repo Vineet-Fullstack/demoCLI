@@ -25,7 +25,7 @@ dotnet --version
 You can install demoCLI as a .NET Global Tool, making it available system-wide on Windows, macOS, and Linux., run the following command:
 
 ```bash
-dotnet tool install --global demoCli --version
+dotnet tool install --global demoCli
 ```
 ```bash
 dotnet tool update --global demoCli

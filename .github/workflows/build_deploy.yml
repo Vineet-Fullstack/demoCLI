@@ -158,9 +158,9 @@ jobs:
 
       - name: Update Homebrew formula (demoCLI.rb)
         run: |
-          sed -i "s|url .*|url \"${{ env.URL }}\"|" homebrew-demoCLI/Formula/demoCLI.rb
-          sed -i "s|sha256 .*|sha256 \"${{ env.SHA256 }}\"|" homebrew-demoCLI/Formula/demoCLI.rb
-          sed -i "s|version .*|version \"${{ env.VERSION }}\"|" homebrew-demoCLI/Formula/demoCLI.rb
+          sed -i "s|url .*|url \"${{ env.URL }}\"|" homebrew-demoCLI/Formula/democli.rb
+          sed -i "s|sha256 .*|sha256 \"${{ env.SHA256 }}\"|" homebrew-demoCLI/Formula/democli.rb
+          sed -i "s|version .*|version \"${{ env.VERSION }}\"|" homebrew-demoCLI/Formula/democli.rb
 
       - name: Commit and push changes
         run: |

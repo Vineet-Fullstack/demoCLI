@@ -25,7 +25,7 @@ dotnet --version
 You can install demoCLI as a .NET Global Tool, making it available system-wide on Windows, macOS, and Linux., run the following command:
 
 ```bash
-dotnet tool install --global demoCli --version 1.0.18
+dotnet tool install --global demoCli --version
 ```
 ```bash
 dotnet tool update --global demoCli
@@ -79,7 +79,7 @@ democli version
 
 ### ⬇️ **Direct Download**
 
-You can download the pre-built binaries directly from the [GitHub Releases](https://github.com/Vineet-Fullstack/demoCLI/releases/tag/v1.0.18).
+You can download the pre-built binaries directly from the [GitHub Releases](https://github.com/Vineet-Fullstack/demoCLI/releases/).
 
 #### 🍏 **macOS** 
 
@@ -158,12 +158,12 @@ democli version
 
 If you prefer to build demoCLI from source:
 
-1. Download the source code from the [GitHub Releases](https://github.com/Vineet-Fullstack/demoCLI/releases/tag/v1.0.18).
+1. Download the source code from the [GitHub Releases](https://github.com/Vineet-Fullstack/demoCLI/releases/).
 2. Extract and build the project.
 
 ```bash
-unzip demoCLI-1.0.18.zip
-cd demoCLI-1.0.18
+unzip demoCLI-1.0.x.zip
+cd demoCLI-1.0.x
 ./build.sh  # or appropriate build command
 ```
 

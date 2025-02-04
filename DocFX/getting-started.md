@@ -36,7 +36,13 @@ dotnet tool update --global demoCli
 After installation, test it using these commands:
 
 ```bash
+democli help
+```
+```bash
 democli hello
+```
+```bash
+democli weather <cityname>
 ```
 ```bash
 democli version
@@ -55,7 +61,13 @@ brew install Vineet-Fullstack/homebrew-demoCLI/demoCLI
 After installation, test it using these commands:
 
 ```bash
+democli help
+```
+```bash
 democli hello
+```
+```bash
+democli weather <cityname>
 ```
 ```bash
 democli version
@@ -97,7 +109,13 @@ sudo mv demoCLI /usr/local/bin/
 **Test the installation:**
 
 ```powershell
+democli help
+```
+```powershell
 democli hello
+```
+```powershell
+democli weather <cityname>
 ```
 ```powershell
 democli version
@@ -122,7 +140,13 @@ docker run -it vineetpatel03/democli:latest
 **Test the installation**:
 
 ```bash
+democli help
+```
+```bash
 democli hello
+```
+```bash
+democli weather <cityname>
 ```
 ```bash
 democli version
@@ -146,7 +170,13 @@ cd demoCLI-1.0.18
 **Test the installation:**
 
 ```bash
+democli help
+```
+```bash
 democli hello
+```
+```bash
+democli weather <cityname>
 ```
 ```bash
 democli version
@@ -159,7 +189,13 @@ democli version
 To verify the installation, execute the following commands:
 
 ```bash
+democli help
+```
+```bash
 democli hello
+```
+```bash
+democli weather <cityname>
 ```
 ```bash
 democli version

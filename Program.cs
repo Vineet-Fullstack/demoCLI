@@ -31,7 +31,7 @@ namespace demoCLI
             {
                 var version = Assembly.GetEntryAssembly()?
                     .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
-                    .InformationalVersion ?? "Unknown";
+                    .InformationalVersion.Split('+')[0] ?? "Unknown";
                 Console.WriteLine($"Demo CLI Tool {version}");
             });
 

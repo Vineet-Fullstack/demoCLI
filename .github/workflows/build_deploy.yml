@@ -64,7 +64,7 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Build for ${{ matrix.platform }}
-        run: dotnet publish -c Release -r ${{ matrix.platform }} -o ./publish/${{ matrix.platform }}
+        run: dotnet publish -c Release -r ${{ matrix.platform }} --self-contained -o ./publish/${{ matrix.platform }}
 
       - name: Zip binaries
         run: |

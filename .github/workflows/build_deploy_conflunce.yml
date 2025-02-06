@@ -1,9 +1,12 @@
 name: CI/CD Pipeline - Confluence Upload
 
 on:
- push:
-    tags:
-      - 'v*'  # Trigger on version tags like v1.0.0, v2.0.0, etc.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Enter Docker image tag (e.g., v1.0.0 or latest)"
+        required: true
+        default: "latest"
 
 jobs:
   build-release-assets:
